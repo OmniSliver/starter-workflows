@@ -1,0 +1,30 @@
+name: NPM Test, coverage and lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  npm-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        # https://docs.github.com/en/actions/guides/building-and-testing-nodejs
+        with:
+          node-version: '12'
+      - name: Cache node modules
+        # https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
+        # https://github.com/actions/cache/blob/main/examples.md#node---npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm t
