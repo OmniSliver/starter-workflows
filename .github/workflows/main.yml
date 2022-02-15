@@ -19,4 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "${{ toJSON(github.event) }}"
+      - run: echo "action = ${{ toJSON(github.event.action) }}"
+      - run: echo "changes = ${{ toJSON(github.event.changes) }}"
+      - run: echo "event = ${{ toJSON(github.event) }}"
