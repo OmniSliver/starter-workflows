@@ -17,7 +17,7 @@ on:
 jobs:
   doNotRunIfEditTitleOrBody:
     runs-on: ubuntu-latest
-    if: ${{ github.event.action != 'edited' || ( github.event.action == 'edited' && github.event.changes.base ) }}
+    if: ${{ github.event.action != 'edited' || ( github.event.action == 'edited' && github.event.changes.base != null ) }}
     steps:
       - run: echo "action = ${{ github.event.action }}"
       - run: echo "changes = ${{ toJSON(github.event.changes) }}"
