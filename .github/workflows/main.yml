@@ -1,0 +1,33 @@
+name: NPM Test, coverage and lint
+
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+    paths-ignore:
+      - '**.md'
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  doNotRunIfEditTitleOrBody:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'edited' || ( github.event.action == 'edited' && github.event.changes.base != null ) }}
+    steps:
+      - run: echo "action = ${{ github.event.action }}"
+      - run: echo "changes = ${{ toJSON(github.event.changes) }}"
+      
+  npm-test:
+    needs: doNotRunIfEditTitleOrBody
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "action = ${{ toJSON(github.event.action) }}"
+      - run: echo "changes = ${{ toJSON(github.event.changes) }}"
+      - run: echo "event = ${{ toJSON(github.event) }}"
+      - run: echo "github.event.changes.base != null ? = ${{ github.event.changes.base != null }}"
