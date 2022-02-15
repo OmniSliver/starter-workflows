@@ -15,10 +15,18 @@ on:
       - develop
 
 jobs:
+  doNotRunIfEditTitleOrBody:
+    if: ${{ github.event.action != 'edited' || ( github.event.action == 'edited' && github.event.changes.base ) }}
+    steps:
+      - run: echo "action = ${{ github.event.action }}"
+      - run: echo "changes = ${{ toJSON(github.event.changes) }}"
+      
   npm-test:
+    needs: branchChangeCheck
     runs-on: ubuntu-latest
 
     steps:
       - run: echo "action = ${{ toJSON(github.event.action) }}"
       - run: echo "changes = ${{ toJSON(github.event.changes) }}"
       - run: echo "event = ${{ toJSON(github.event) }}"
+      - run: echo "bool? = ${{ github.event.action == 'edited' && github.event.changes.base }}"
