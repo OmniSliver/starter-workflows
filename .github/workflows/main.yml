@@ -30,4 +30,4 @@ jobs:
       - run: echo "action = ${{ toJSON(github.event.action) }}"
       - run: echo "changes = ${{ toJSON(github.event.changes) }}"
       - run: echo "event = ${{ toJSON(github.event) }}"
-      - run: echo "bool? = ${{ github.event.action == 'edited' && github.event.changes.base }}"
+      - run: echo "github.event.changes.base != null ? = ${{ github.event.changes.base != null }}"
