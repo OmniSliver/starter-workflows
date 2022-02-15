@@ -16,13 +16,14 @@ on:
 
 jobs:
   doNotRunIfEditTitleOrBody:
+    runs-on: ubuntu-latest
     if: ${{ github.event.action != 'edited' || ( github.event.action == 'edited' && github.event.changes.base ) }}
     steps:
       - run: echo "action = ${{ github.event.action }}"
       - run: echo "changes = ${{ toJSON(github.event.changes) }}"
       
   npm-test:
-    needs: branchChangeCheck
+    needs: doNotRunIfEditTitleOrBody
     runs-on: ubuntu-latest
 
     steps:
